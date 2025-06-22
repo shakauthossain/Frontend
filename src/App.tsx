@@ -7,9 +7,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import MailEditor from "./pages/MailEditor";
+import SpeedDetails from "./pages/SpeedDetails";
 import NotFound from "./pages/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -24,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-otp" element={<VerifyOTP />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={
             <PrivateRoute>
@@ -31,6 +34,11 @@ const App = () => (
             </PrivateRoute>
           } />
           <Route path="/mail/:leadId" element={<MailEditor />} />
+          <Route path="/speed/:leadId" element={
+            <PrivateRoute>
+              <SpeedDetails />
+            </PrivateRoute>
+          } />
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

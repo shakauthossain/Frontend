@@ -47,9 +47,10 @@ export default function Register() {
       await registerUser(form);
       toast({
         title: "Registration Successful",
-        description: "Your account has been created. Please sign in.",
+        description: "Please check your email for the OTP verification code.",
       });
-      setTimeout(() => navigate("/login"), 1000);
+      // Navigate to OTP verification with email
+      setTimeout(() => navigate("/verify-otp", { state: { email: form.email } }), 1000);
     } catch (err: any) {
       toast({
         title: "Registration Failed",
