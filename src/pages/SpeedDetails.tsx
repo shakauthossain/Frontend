@@ -20,6 +20,9 @@ interface Lead {
   website_url?: string
   website_speed_web?: number
   website_speed_mobile?: number
+  pagespeed_metrics_mobile?: Record<string, any>  
+  pagespeed_metrics_desktop?: Record<string, any> 
+  pagespeed_diagnostics?: Record<string, any>
 }
 
 const SpeedDetails = () => {
@@ -172,6 +175,12 @@ const SpeedDetails = () => {
         if (foundLead) {
           console.log('Found lead:', foundLead)
           setLead(foundLead)
+          if (foundLead.pagespeed_metrics_mobile) {
+		  setDiagnosticsData({
+		    ...foundLead.pagespeed_diagnostics, 
+		    ...foundLead.pagespeed_metrics_mobile 
+		  })
+		}     
         } else {
           console.log('Lead not found with ID:', leadId)
           toast({
