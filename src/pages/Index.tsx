@@ -148,40 +148,38 @@ const Index = () => {
   }
 
   const fetchNewLeads = async (filters) => {
-    setLoading(true)
+    setLoading(true);
 
     toast({
       title: "Fetching New Leads",
-      description: `Importing ${filters.perPage} leads from Apollo...`,
-    })
+      description: `Importing ${filters.perPage} leads from GoHighLevel...`,
+    });
 
     try {
-      const params = new URLSearchParams()
-      if (filters.industry) params.append("industry", filters.industry)
-      if (filters.functions) params.append("functions", filters.functions)
-      if (filters.seniority) params.append("seniority", filters.seniority)
-      params.append("per_page", filters.perPage.toString())
+      const params = new URLSearchParams();
+      params.append("per_page", filters.perPage.toString());
 
-      await fetch(`http://localhost:8000/import/apollo?${params.toString()}`)
+      await fetch(`http://localhost:8000/import/gohighlevel?${params.toString()}`);
 
       toast({
         title: "New Leads Imported",
-        description: `Successfully fetched ${filters.perPage} new leads`,
-      })
+        description: `Successfully fetched ${filters.perPage} new leads from GoHighLevel`,
+      });
 
-      await loadLeads()
+      await loadLeads();
     } catch (error) {
-      console.error("Error fetching leads:", error)
+      console.error("Error fetching leads:", error);
 
       toast({
         title: "Import Failed",
-        description: "Failed to fetch new leads from Apollo",
+        description: "Failed to fetch new leads from GoHighLevel",
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
+
 
   const refreshSpeed = async (leadId) => {
     toast({
