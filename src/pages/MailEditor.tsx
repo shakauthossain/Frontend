@@ -28,7 +28,7 @@ const MailEditor = () => {
         description: `Loading email content for lead ${leadId}...`,
       })
 
-      const response = await fetch(`http://localhost:8000/leads`)
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/leads`)
       const leads = await response.json()
 
       if (!Array.isArray(leads)) {
@@ -84,7 +84,7 @@ const MailEditor = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/generate-mail/${leadId}`, {
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/generate-mail/${leadId}`, {
         method: "POST",
       })
       const data = await response.json()
@@ -135,7 +135,7 @@ const MailEditor = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/save-mail/${leadId}`, {
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/save-mail/${leadId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email_body: emailContent }),
@@ -176,7 +176,7 @@ const MailEditor = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/send-mail/${leadId}`, {
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/send-mail/${leadId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email_body: emailContent }),

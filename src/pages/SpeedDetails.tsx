@@ -164,7 +164,7 @@ const SpeedDetails = () => {
       console.log('Loading lead details for ID:', leadId)
       
       // Fetch all leads since individual lead endpoint doesn't exist
-      const response = await fetch(`http://localhost:8000/leads?skip=0&limit=100`)
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/leads?skip=0&limit=100`)
       if (response.ok) {
         const leads = await response.json()
         console.log('Fetched leads:', leads)
@@ -222,7 +222,7 @@ const SpeedDetails = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/speedtest/${leadId}`, {
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/speedtest/${leadId}`, {
         method: "POST",
       })
       const data = await response.json()

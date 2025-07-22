@@ -54,6 +54,7 @@ const campaignItems = [
     title: "LinkedIn Campaigns",
     url: "/linkedin-campaigns",
     icon: Linkedin,
+    hidden: true,
   }
 ]
 
@@ -62,16 +63,19 @@ const otherItems = [
     title: "Analytics",
     url: "#",
     icon: BarChart3,
+    hidden: true,
   },
   {
     title: "Speed Tests",
     url: "#",
     icon: Zap,
+    hidden: true,
   },
   {
     title: "Settings",
     url: "#",
     icon: Settings,
+    hidden: true,
   },
 ]
 
@@ -137,7 +141,7 @@ export function Sidebar() {
             <Zap className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900">LeadFlow</h2>
+            <h2 className="text-lg font-semibold text-slate-900">NH Outreach</h2>
             <p className="text-xs text-slate-500">Lead Management</p>
           </div>
         </div>
@@ -166,7 +170,9 @@ export function Sidebar() {
           <SidebarGroupLabel className="text-slate-600 font-medium">Campaigns</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {campaignItems.map((item) => (
+              {campaignItems
+              .filter((item) => item.title !== "LinkedIn Campaigns")
+              .map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="hover:bg-slate-100 transition-colors">
                     <a href={item.url} className="flex items-center space-x-3 px-3 py-2 rounded-lg">
@@ -181,10 +187,11 @@ export function Sidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-600 font-medium">Tools</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-600 font-medium hidden">Tools</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {otherItems.map((item) => (
+              {otherItems.filter((item) => !item.hidden)
+                         .map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="hover:bg-slate-100 transition-colors">
                     <a href={item.url} className="flex items-center space-x-3 px-3 py-2 rounded-lg">

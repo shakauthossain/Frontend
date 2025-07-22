@@ -47,7 +47,7 @@ export default function Login() {
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold text-slate-900">Welcome Back</CardTitle>
           <CardDescription className="text-slate-600">
-            Sign in to your LeadFlow account
+            Sign in to your NH Outreach Agent account
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleLogin}>

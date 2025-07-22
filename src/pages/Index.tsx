@@ -91,7 +91,7 @@ const Index = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/leads?skip=${currentPage * pageSize}&limit=${pageSize}`)
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/leads?skip=${currentPage * pageSize}&limit=${pageSize}`)
       const data = await response.json()
 
       if (Array.isArray(data)) {
@@ -159,7 +159,7 @@ const Index = () => {
       const params = new URLSearchParams();
       params.append("per_page", filters.perPage.toString());
 
-      await fetch(`http://localhost:8000/import/gohighlevel?${params.toString()}`);
+      await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/import/gohighlevel?${params.toString()}`);
 
       toast({
         title: "New Leads Imported",
@@ -188,7 +188,7 @@ const Index = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/speedtest/${leadId}`, { method: "POST" })
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/speedtest/${leadId}`, { method: "POST" })
       const data = await response.json()
 
       toast({
@@ -217,7 +217,7 @@ const Index = () => {
     })
 
     try {
-      const response = await fetch(`http://localhost:8000/speedtest`, { method: "POST" })
+      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/speedtest`, { method: "POST" })
       const data = await response.json()
 
       toast({
@@ -251,7 +251,7 @@ const Index = () => {
                 <SidebarTrigger className="md:hidden" />
                 <div>
                   <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-                  <p className="text-sm text-slate-600">Welcome back to LeadFlow</p>
+                  <p className="text-sm text-slate-600">Welcome back to NH Outreach Agent</p>
                 </div>
               </div>
 

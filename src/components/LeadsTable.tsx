@@ -151,12 +151,12 @@ export function LeadsTable({
 
   const getMailStatusIcon = (mailSent: boolean) => {
     return mailSent ? (
-      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 border border-green-200">
-        <Mail className="w-4 h-4 text-green-600" />
+      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-200 border border-green-200">
+        <Mail className="w-4 h-4 text-green-900" />
       </div>
     ) : (
-      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 border border-gray-200">
-        <Mail className="w-4 h-4 text-gray-400" />
+      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 border border-gray-200">
+        <Mail className="w-4 h-4 text-red-900" />
       </div>
     )
   }
@@ -252,7 +252,7 @@ export function LeadsTable({
               {shouldShowSendLinkedIn && (
                 <Button
                   onClick={handleSendLinkedIn}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 text-white hidden"
                 >
                   <Linkedin className="w-4 h-4 mr-2" />
                   Send LinkedIn ({selectedLeads.size})
@@ -436,7 +436,12 @@ export function LeadsTable({
                         asChild
                         className="h-9 w-9 p-0 rounded-full hover:bg-purple-50 hover:border-purple-200 border border-transparent transition-all duration-200"
                       >
-                        <a href={lead.screenshot_url} target="_blank" rel="noopener noreferrer" title="View Screenshot">
+                        <a
+                          href={`${lead.screenshot_url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="View Screenshot"
+                        >
                           <Camera className="w-4 h-4 text-purple-600" />
                         </a>
                       </Button>

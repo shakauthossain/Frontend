@@ -19,7 +19,7 @@ export default function VerifyOTP() {
   const verifyOTP = async (otpCode: string, email: string) => {
     console.log("Verifying OTP for:", email);
 
-    const response = await fetch("http://localhost:8000/verify-otp", {
+    const response = await fetch("https://notionhive-ai-nh-outreach-agent.hf.space/verify-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export default function VerifyOTP() {
   const resendOTP = async (email: string) => {
     console.log("Resending OTP to:", email);
 
-    const response = await fetch("http://localhost:8000/resend-otp", {
+    const response = await fetch("https://notionhive-ai-nh-outreach-agent.hf.space/resend-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

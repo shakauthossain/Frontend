@@ -79,7 +79,7 @@ export default function Register() {
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold text-slate-900">Create Account</CardTitle>
           <CardDescription className="text-slate-600">
-            Join LeadFlow to manage your sales leads effectively
+            Join NH Outreach Agent to manage your sales leads effectively
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
