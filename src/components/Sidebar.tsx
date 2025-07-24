@@ -49,7 +49,6 @@ const campaignItems = [
     title: "Email Campaigns",
     url: "/email-campaigns",
     icon: Mail,
-    hidden: true,
   },
   {
     title: "LinkedIn Campaigns",
@@ -170,7 +169,7 @@ export function Sidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-600 font-medium hidden">Campaigns</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-600 font-medium">Campaigns</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {campaignItems

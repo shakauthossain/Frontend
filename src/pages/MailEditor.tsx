@@ -258,7 +258,7 @@ const MailEditor = () => {
                   readOnly={!isEditing}
                   className={`min-h-[400px] resize-none ${!isEditing ? "bg-slate-50" : "bg-white"}`}
                   placeholder="Email content will appear here..."
-                />
+                ></Textarea>
               </CardContent>
             </Card>
           </div>
