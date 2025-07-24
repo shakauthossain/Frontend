@@ -1,6 +1,7 @@
 import { setToken, getToken, getRefreshToken, isTokenExpired } from "@/utils/auth"
+import { API_BASE_URL } from "@/config/api"
 
-const BASE_URL = "https://notionhive-ai-nh-outreach-agent.hf.space"
+const BASE_URL = API_BASE_URL
 
 export const loginUser = async (usernameOrEmail: string, password: string) => {
   console.log("Attempting login for:", usernameOrEmail)

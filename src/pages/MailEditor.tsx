@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
+import { API_BASE_URL } from "@/config/api"
 import { Sidebar } from "@/components/Sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
@@ -28,7 +29,7 @@ const MailEditor = () => {
         description: `Loading email content for lead ${leadId}...`,
       })
 
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/leads`)
+      const response = await fetch(`${API_BASE_URL}/leads`)
       const leads = await response.json()
 
       if (!Array.isArray(leads)) {
@@ -84,7 +85,7 @@ const MailEditor = () => {
     })
 
     try {
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/generate-mail/${leadId}`, {
+      const response = await fetch(`${API_BASE_URL}/generate-mail/${leadId}`, {
         method: "POST",
       })
       const data = await response.json()
@@ -135,7 +136,7 @@ const MailEditor = () => {
     })
 
     try {
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/save-mail/${leadId}`, {
+      const response = await fetch(`${API_BASE_URL}/save-mail/${leadId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email_body: emailContent }),
@@ -176,7 +177,7 @@ const MailEditor = () => {
     })
 
     try {
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/send-mail/${leadId}`, {
+      const response = await fetch(`${API_BASE_URL}/send-mail/${leadId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email_body: emailContent }),

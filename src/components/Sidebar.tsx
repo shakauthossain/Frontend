@@ -49,6 +49,7 @@ const campaignItems = [
     title: "Email Campaigns",
     url: "/email-campaigns",
     icon: Mail,
+    hidden: true,
   },
   {
     title: "LinkedIn Campaigns",
@@ -137,9 +138,11 @@ export function Sidebar() {
     <UISidebar className="border-r border-slate-200">
       <SidebarHeader className="p-6">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <Zap className="w-4 h-4 text-white" />
-          </div>
+            <img
+              src="favicon.ico" // or import and use: {logo} if imported
+              alt="Logo"
+              className="w-7 h-7"
+            />
           <div>
             <h2 className="text-lg font-semibold text-slate-900">NH Outreach</h2>
             <p className="text-xs text-slate-500">Lead Management</p>
@@ -167,11 +170,11 @@ export function Sidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-600 font-medium">Campaigns</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-slate-600 font-medium hidden">Campaigns</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {campaignItems
-              .filter((item) => item.title !== "LinkedIn Campaigns")
+              .filter((item) => !item.hidden)
               .map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="hover:bg-slate-100 transition-colors">

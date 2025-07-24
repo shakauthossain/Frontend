@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { API_BASE_URL } from "@/config/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -19,7 +20,7 @@ export default function VerifyOTP() {
   const verifyOTP = async (otpCode: string, email: string) => {
     console.log("Verifying OTP for:", email);
 
-    const response = await fetch("https://notionhive-ai-nh-outreach-agent.hf.space/verify-otp", {
+    const response = await fetch(`${API_BASE_URL}/verify-otp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,7 +42,7 @@ export default function VerifyOTP() {
   const resendOTP = async (email: string) => {
     console.log("Resending OTP to:", email);
 
-    const response = await fetch("https://notionhive-ai-nh-outreach-agent.hf.space/resend-otp", {
+    const response = await fetch(`${API_BASE_URL}/resend-otp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

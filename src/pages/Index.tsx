@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
+import { API_BASE_URL } from "@/config/api"
 import { useNavigate } from "react-router-dom"
 import { Sidebar } from "@/components/Sidebar"
 import { LeadsTable } from "@/components/LeadsTable"
@@ -91,7 +92,7 @@ const Index = () => {
     })
 
     try {
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/leads?skip=${currentPage * pageSize}&limit=${pageSize}`)
+      const response = await fetch(`${API_BASE_URL}/leads?skip=${currentPage * pageSize}&limit=${pageSize}`)
       const data = await response.json()
 
       if (Array.isArray(data)) {
@@ -159,7 +160,7 @@ const Index = () => {
       const params = new URLSearchParams();
       params.append("per_page", filters.perPage.toString());
 
-      await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/import/gohighlevel?${params.toString()}`);
+      await fetch(`${API_BASE_URL}/import/gohighlevel?${params.toString()}`);
 
       toast({
         title: "New Leads Imported",
@@ -188,7 +189,7 @@ const Index = () => {
     })
 
     try {
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/speedtest/${leadId}`, { method: "POST" })
+      const response = await fetch(`${API_BASE_URL}/speedtest/${leadId}`, { method: "POST" })
       const data = await response.json()
 
       toast({
@@ -217,7 +218,7 @@ const Index = () => {
     })
 
     try {
-      const response = await fetch(`https://notionhive-ai-nh-outreach-agent.hf.space/speedtest`, { method: "POST" })
+      const response = await fetch(`${API_BASE_URL}/speedtest`, { method: "POST" })
       const data = await response.json()
 
       toast({
