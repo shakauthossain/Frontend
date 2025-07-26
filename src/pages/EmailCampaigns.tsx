@@ -132,9 +132,26 @@ export default function EmailCampaigns() {
     if (!selectedLead) return
     setIsGenerating(true)
     try {
-      const response = await apiPost(`${API_BASE_URL}/generate-mail/${selectedLead.id}`)
+      // Format previous messages for the API
+      const previousMessages = conversationData?.messages?.map((message: any) => ({
+        sender: "agent", // Assuming messages are from agent based on the API example
+        content: message.body
+      })) || []
+
+      const requestBody = {
+        contact_id: selectedLead.id,
+        conversation_id: selectedLead.conversation_id,
+        previous_messages: previousMessages
+      }
+
+      console.log("Sending data to backend API:", requestBody)
+
+      const response = await apiPost(`${API_BASE_URL}/emails/regenerate`, requestBody)
       const data = await response.json()
-      setReplyContent(data.generated_email || "")
+      
+      console.log("API Response:", data)
+      
+      setReplyContent(data.regenerated_email || "")
     } catch (error) {
       console.error("Failed to generate email:", error)
     } finally {
