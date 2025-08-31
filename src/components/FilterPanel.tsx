@@ -1,22 +1,28 @@
 import { useState } from 'react';
-import { Search, Filter, RefreshCw } from 'lucide-react';
+import { Search, Filter, RefreshCw, Upload, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { CsvUpload } from './CsvUpload';
+import { CsvDownload } from './CsvDownload';
 
 interface FilterPanelProps {
   onFilter: (searchTerm: string) => void;
   onFetchLeads: (filters: any) => void;
   loading: boolean;
+  onCsvUploadComplete?: () => void;
+  selectedIds?: number[];
 }
 
-export function FilterPanel({ onFilter,onFetchLeads, loading }: FilterPanelProps) {
+export function FilterPanel({ onFilter, onFetchLeads, loading, onCsvUploadComplete, selectedIds }: FilterPanelProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [industry, setIndustry] = useState('');
   const [functions, setFunctions] = useState('');
   const [seniority, setSeniority] = useState('');
   const [perPage, setPerPage] = useState('10');
+  const [csvUploadOpen, setCsvUploadOpen] = useState(false);
 
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(10);
@@ -136,6 +142,39 @@ export function FilterPanel({ onFilter,onFetchLeads, loading }: FilterPanelProps
               )}
             </Button>
           </div>
+        </div>
+
+        {/* CSV Actions Section */}
+        <div className="mt-6 border-t border-slate-200 pt-6 space-y-4">
+          {/* Download CSV */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Download className="w-4 h-4 text-slate-500" />
+              <h3 className="font-medium text-slate-900">Export Data</h3>
+            </div>
+            <CsvDownload selectedIds={selectedIds} />
+          </div>
+
+          {/* CSV Upload Collapsible Section */}
+          <Collapsible open={csvUploadOpen} onOpenChange={setCsvUploadOpen}>
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-between"
+              >
+                <div className="flex items-center space-x-2">
+                  <Upload className="w-4 h-4" />
+                  <span>Upload CSV File</span>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {csvUploadOpen ? 'Click to collapse' : 'Click to expand'}
+                </div>
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-4">
+              <CsvUpload onUploadComplete={onCsvUploadComplete} />
+            </CollapsibleContent>
+          </Collapsible>
         </div>
       </CardContent>
     </Card>

@@ -327,7 +327,7 @@ const Index = () => {
               </div>
             </div>
 
-            <FilterPanel onFilter={handleFilter} onFetchLeads={fetchNewLeads} loading={loading} />
+            <FilterPanel onFilter={handleFilter} onFetchLeads={fetchNewLeads} loading={loading} onCsvUploadComplete={loadLeads} />
 
             <StatusBar message={statusMessage} />
 
