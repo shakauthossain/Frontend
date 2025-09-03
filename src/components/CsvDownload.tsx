@@ -26,6 +26,9 @@ const AVAILABLE_COLUMNS = [
   { key: 'conversation_id', label: 'Conversation ID' },
   { key: 'mail_sent', label: 'Mail Sent' },
   { key: 'email_subject', label: 'Email Subject' },
+  { key: 'punchline1', label: 'Punchline 1' },
+  { key: 'punchline2', label: 'Punchline 2' },
+  { key: 'punchline3', label: 'Punchline 3' },
 ];
 
 export function CsvDownload({ selectedIds = [] }: CsvDownloadProps) {
@@ -51,6 +54,12 @@ export function CsvDownload({ selectedIds = [] }: CsvDownloadProps) {
     setSelectedColumns([]);
   };
 
+  const sortedSelectedColumns = selectedColumns.sort((a, b) => {
+    const aIndex = AVAILABLE_COLUMNS.findIndex(col => col.key === a);
+    const bIndex = AVAILABLE_COLUMNS.findIndex(col => col.key === b);
+    return aIndex - bIndex;
+  });
+
   const handleDownload = async () => {
     if (selectedColumns.length === 0) {
       toast.error('Please select at least one column to download');
@@ -61,7 +70,7 @@ export function CsvDownload({ selectedIds = [] }: CsvDownloadProps) {
     
     try {
       const params = new URLSearchParams({
-        columns: selectedColumns.join(',')
+        columns: sortedSelectedColumns.join(',')
       });
       
       // Add selected IDs if any
