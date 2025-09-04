@@ -21,7 +21,7 @@ const AVAILABLE_COLUMNS = [
   { key: 'linkedin_url', label: 'LinkedIn URL' },
   { key: 'website_speed_web', label: 'Website Speed (Desktop)' },
   { key: 'website_speed_mobile', label: 'Website Speed (Mobile)' },
-  { key: 'screenshot_url', label: 'Screenshot URL' },
+  { key: 'screenshot_url_web', label: 'Screenshot URL' },
   { key: 'ghl_contact_id', label: 'GHL Contact ID' },
   { key: 'conversation_id', label: 'Conversation ID' },
   { key: 'mail_sent', label: 'Mail Sent' },
