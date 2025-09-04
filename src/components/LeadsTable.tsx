@@ -21,7 +21,7 @@ interface Lead {
   linkedin_url?: string
   website_speed_web?: number
   website_speed_mobile?: number
-  screenshot_url?: string
+  screenshot_url_web?: string
   mail_sent: boolean
 }
 
@@ -429,7 +429,7 @@ export function LeadsTable({
                         </a>
                       </Button>
                     )}
-                    {lead.screenshot_url && (
+                    {lead.screenshot_url_web && (
                       <Button 
                         variant="ghost" 
                         size="sm" 
@@ -437,7 +437,7 @@ export function LeadsTable({
                         className="h-9 w-9 p-0 rounded-full hover:bg-purple-50 hover:border-purple-200 border border-transparent transition-all duration-200"
                       >
                         <a
-                          href={`${lead.screenshot_url}`}
+                          href={`${lead.screenshot_url_web}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           title="View Screenshot"
