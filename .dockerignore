@@ -1,0 +1,26 @@
+# dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# production build output (we rebuild inside container)
+dist
+
+# local env files (don’t bake secrets into image)
+.env
+.env.local
+.env.*.local
+
+# Vite cache
+.vite
+
+# editor / system files
+.DS_Store
+.idea
+.vscode
+*.swp
+
+# git
+.git
+.gitignore
