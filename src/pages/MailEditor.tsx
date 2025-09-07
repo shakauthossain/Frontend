@@ -7,8 +7,9 @@ import { Sidebar } from "@/components/Sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Mail, Edit, Save, Send, Lock } from "lucide-react"
+import { Mail, Edit, Save, Send, Lock, Zap } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 const MailEditor = () => {
@@ -16,10 +17,16 @@ const MailEditor = () => {
   const [emailContent, setEmailContent] = useState("")
   const [isEditing, setIsEditing] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [punchlines, setPunchlines] = useState({
+    punchline1: "",
+    punchline2: "", 
+    punchline3: ""
+  })
   const { toast } = useToast()
 
   useEffect(() => {
     loadEmail()
+    loadPunchlines()
   }, [leadId])
 
   const loadEmail = async () => {
@@ -45,6 +52,13 @@ const MailEditor = () => {
       if (lead) {
         const emailToShow = lead.final_email || lead.generated_email || ""
         setEmailContent(emailToShow)
+        
+        // Load punchlines
+        setPunchlines({
+          punchline1: lead.punchline1 || "",
+          punchline2: lead.punchline2 || "",
+          punchline3: lead.punchline3 || ""
+        })
 
         if (emailToShow) {
           toast({
@@ -73,6 +87,23 @@ const MailEditor = () => {
         description: "Error loading email content",
         variant: "destructive",
       })
+    }
+  }
+
+  const loadPunchlines = async () => {
+    if (!leadId) return
+    try {
+      const response = await fetch(`${API_BASE_URL}/lead-punchlines/${leadId}`)
+      const data = await response.json()
+      if (data && data.punchlines) {
+        setPunchlines({
+          punchline1: data.punchlines.punchline1 || "",
+          punchline2: data.punchlines.punchline2 || "",
+          punchline3: data.punchlines.punchline3 || ""
+        })
+      }
+    } catch (error) {
+      setPunchlines({ punchline1: "", punchline2: "", punchline3: "" })
     }
   }
 
@@ -200,6 +231,34 @@ const MailEditor = () => {
     }
   }
 
+  const generatePunchlines = async () => {
+    setLoading(true)
+    toast({
+      title: "Generating Punchlines",
+      description: `Generating punchlines for lead ${leadId}...`,
+    })
+    try {
+      const response = await fetch(`${API_BASE_URL}/process-punchlines/${leadId}`, {
+        method: "POST",
+      })
+      await response.json()
+      await loadPunchlines()
+      toast({
+        title: "Punchlines Generated Successfully",
+        description: `Punchlines have been generated for lead ${leadId}`,
+      })
+    } catch (error) {
+      console.error("Error generating punchlines:", error)
+      toast({
+        title: "Generation Failed",
+        description: `Failed to generate punchlines for lead ${leadId}`,
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-slate-100">
@@ -211,47 +270,22 @@ const MailEditor = () => {
                 <h1 className="text-3xl font-bold text-slate-900">Email Generator & Sender</h1>
                 <p className="text-slate-600 mt-1">Lead ID: {leadId}</p>
               </div>
-              <Button onClick={generateEmail} disabled={loading} className="flex items-center space-x-2">
-                <Mail className="w-4 h-4" />
-                <span>Generate Sales Email</span>
-                {loading && (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
-                )}
-              </Button>
             </div>
 
             <Card className="flex-1">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Email Content</span>
-                  <div className="flex items-center space-x-2">
-                    <Button variant="outline" size="sm" onClick={toggleEdit} className="flex items-center space-x-1">
-                      {isEditing ? <Lock className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
-                      <span>{isEditing ? "Lock" : "Edit"}</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={saveDraft}
-                      disabled={loading || isEditing}
-                      className="flex items-center space-x-1"
-                    >
-                      <Save className="w-4 h-4" />
-                      <span>Save Draft</span>
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={sendEmail}
-                      disabled={loading || isEditing}
-                      className="flex items-center space-x-1"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>Send Email</span>
-                    </Button>
-                  </div>
-                </CardTitle>
+              <CardHeader className="flex flex-row justify-between items-center">
+                <CardTitle>Email Content</CardTitle>
+                <div className="flex items-center space-x-2">
+                <Button onClick={generateEmail} disabled={loading} className="flex items-center space-x-2" variant="outline">
+                  <Mail className="w-4 h-4" />
+                  <span>Generate Sales Email</span>
+                  {loading && (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
+                  )}
+                </Button>
+              </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-2">
                 <Textarea
                   value={emailContent}
                   onChange={(e) => setEmailContent(e.target.value)}
@@ -259,6 +293,87 @@ const MailEditor = () => {
                   className={`min-h-[400px] resize-none ${!isEditing ? "bg-slate-50" : "bg-white"}`}
                   placeholder="Email content will appear here..."
                 ></Textarea>
+                
+                {/* Action Buttons Below Content */}
+                <div className="flex items-center justify-end space-x-2 pt-4">
+                  <Button variant="outline" size="sm" onClick={toggleEdit} className="flex items-center space-x-1">
+                    {isEditing ? <Lock className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
+                    <span>{isEditing ? "Lock" : "Edit"}</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={saveDraft}
+                    disabled={loading || isEditing}
+                    className="flex items-center space-x-1"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>Edit Draft</span>
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={sendEmail}
+                    disabled={loading || isEditing}
+                    className="flex items-center space-x-1"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>Send Mail</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Punchlines Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Zap className="w-5 h-5" />
+                    <span>Punchlines</span>
+                  </div>
+                  <Button 
+                    onClick={generatePunchlines} 
+                    disabled={loading} 
+                    size="sm"
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                  >
+                    <Zap className="w-4 h-4" />
+                    <span>Generate Punchlines</span>
+                    {loading && (
+                      <div className="w-4 h-4 border-2 border-slate-600 border-t-transparent rounded-full animate-spin ml-2"></div>
+                    )}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 mb-2 block">Punchline #01</label>
+                  <Input
+                    value={punchlines.punchline1}
+                    readOnly
+                    className={`bg-slate-50${punchlines.punchline1 === "Couldn’t access website—manual review needed." ? " border border-red-400 bg-red-100 text-red-700" : ""}`}
+                    placeholder="No punchline generated yet..."
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 mb-2 block">Punchline #02</label>
+                  <Input
+                    value={punchlines.punchline2}
+                    readOnly
+                    className={`bg-slate-50${punchlines.punchline2 === "Couldn’t access website—manual review needed." ? " border border-red-400 bg-red-100 text-red-700" : ""}`}
+                    placeholder="No punchline generated yet..."
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 mb-2 block">Punchline #03</label>
+                  <Input
+                    value={punchlines.punchline3}
+                    readOnly
+                    className={`bg-slate-50${punchlines.punchline3 === "Couldn’t access website—manual review needed." ? " border border-red-400 bg-red-100 text-red-700" : ""}`}
+                    placeholder="No punchline generated yet..."
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>

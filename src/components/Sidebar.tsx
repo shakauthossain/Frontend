@@ -138,7 +138,7 @@ export function Sidebar() {
       <SidebarHeader className="p-6">
         <div className="flex items-center space-x-3">
             <img
-              src="favicon.ico" // or import and use: {logo} if imported
+              src="favicon.ico"
               alt="Logo"
               className="w-7 h-7"
             />

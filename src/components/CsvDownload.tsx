@@ -69,14 +69,32 @@ export function CsvDownload({ selectedIds = [] }: CsvDownloadProps) {
     setDownloading(true);
     
     try {
-      const params = new URLSearchParams({
-        columns: sortedSelectedColumns.join(',')
-      });
-      
-      // Add selected IDs if any
-      selectedIds.forEach(id => params.append('ids', String(id)));
+      // Use the selected leads endpoint for POST request
+      const endpoint = selectedIds.length > 0 
+        ? `${API_BASE_URL}/download-csv-selected`
+        : `${API_BASE_URL}/download-csv`;
 
-      const res = await fetch(`${API_BASE_URL}/download-csv?${params.toString()}`);
+      let res;
+      
+      if (selectedIds.length > 0) {
+        // POST request for selected leads
+        res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lead_ids: selectedIds,
+            columns: sortedSelectedColumns.join(',')
+          })
+        });
+      } else {
+        // GET request for all leads
+        const params = new URLSearchParams({
+          columns: sortedSelectedColumns.join(',')
+        });
+        res = await fetch(`${endpoint}?${params.toString()}`);
+      }
       
       if (!res.ok) {
         throw new Error('Failed to download CSV');
@@ -86,7 +104,7 @@ export function CsvDownload({ selectedIds = [] }: CsvDownloadProps) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'leads.csv';
+      a.download = selectedIds.length > 0 ? 'leads_selected.csv' : 'leads.csv';
       document.body.appendChild(a);
       a.click();
       a.remove();
