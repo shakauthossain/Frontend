@@ -13,6 +13,7 @@ import {
   Filter,
   Search,
   Download,
+  Upload,
   Plus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -378,24 +379,24 @@ export function LeadsTable({
           <Dialog open={csvUploadOpen} onOpenChange={setCsvUploadOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" /> Upload CSV
+                <Upload className="w-4 h-4 mr-2" /> Upload CSV
               </Button>
             </DialogTrigger>
             <DialogContent className="w-96">
               <DialogHeader>
                 <DialogTitle>Upload CSV Leads</DialogTitle>
               </DialogHeader>
-              <CsvUpload 
+              <CsvUpload
                 onUploadComplete={() => {
                   setCsvUploadOpen(false);
                   // You can add refresh logic here if needed
-                }} 
+                }}
               />
             </DialogContent>
           </Dialog>
 
           {/* CSV Download */}
-          <CsvDownload selectedIds={Array.from(selectedLeads)} />
+          {/* <CsvDownload selectedIds={Array.from(selectedLeads)} /> */}
 
           {/* Fetch New Leads Dialog */}
           <Dialog open={fetchLeadsOpen} onOpenChange={setFetchLeadsOpen}>
