@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { useToast } from "@/hooks/use-toast"
+import { startJobWithTracking } from "@/utils/celeryJobTracker"
 import PerformanceDiagnostics from "@/components/PerformanceDiagnostics"
 
 interface Lead {
@@ -217,30 +218,18 @@ const SpeedDetails = () => {
     if (!leadId) return
 
     setRefreshing(true)
-    toast({
-      title: "Speed Test Started",
-      description: "Refreshing speed test results...",
-    })
-
     try {
-      const response = await fetch(`${API_BASE_URL}/speedtest/${leadId}`, {
-        method: "POST",
-      })
-      const data = await response.json()
-
-      toast({
-        title: "Speed Test Complete",
-        description: data.message || "Speed test completed successfully",
-      })
-
-      await loadLeadDetails()
+      await startJobWithTracking(`/speedtest/${leadId}`, {
+        startTitle: "Speed Test Started",
+        startDescription: "Refreshing speed test results...",
+        successTitle: "Speed Test Complete",
+        successDescription: "Speed test completed successfully",
+        errorTitle: "Speed Test Failed",
+        errorDescription: "Failed to refresh speed test results",
+        onComplete: loadLeadDetails
+      });
     } catch (error) {
-      console.error("Error refreshing speed:", error)
-      toast({
-        title: "Speed Test Failed",
-        description: "Failed to refresh speed test",
-        variant: "destructive",
-      })
+      console.error("Error starting speed test:", error);
     } finally {
       setRefreshing(false)
     }

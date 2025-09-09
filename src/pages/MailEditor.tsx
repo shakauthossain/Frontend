@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Edit, Save, Send, Lock, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { startJobWithTracking } from "@/utils/celeryJobTracker";
 
 const MailEditor = () => {
   const { leadId } = useParams();

@@ -26,6 +26,7 @@ import { removeToken } from "@/utils/auth";
 import { getProfile } from "@/api/auth";
 import { useToast } from "@/hooks/use-toast";
 import { CsvDownload } from "@/components/CsvDownload";
+import { startJobWithTracking } from "@/utils/celeryJobTracker";
 
 const Index = () => {
   const [leads, setLeads] = useState([]);
@@ -220,31 +221,18 @@ const Index = () => {
   const testAllWebsites = async () => {
     setLoading(true);
 
-    toast({
-      title: "Testing All Websites",
-      description: "Running speed tests for all leads...",
-    });
-
     try {
-      const response = await fetch(`${API_BASE_URL}/speedtest`, {
-        method: "POST",
+      await startJobWithTracking('/speedtest', {
+        startTitle: "Speed Tests Started",
+        startDescription: "Running speed tests for all leads...",
+        successTitle: "Speed Tests Complete",
+        successDescription: "All website speed tests completed successfully",
+        errorTitle: "Speed Tests Failed",
+        errorDescription: "Failed to complete speed tests for all websites",
+        onComplete: loadLeads
       });
-      const data = await response.json();
-
-      toast({
-        title: "Speed Tests Complete",
-        description: data.message || "All website speed tests completed",
-      });
-
-      await loadLeads();
     } catch (error) {
-      console.error("Error testing websites:", error);
-
-      toast({
-        title: "Speed Tests Failed",
-        description: "Failed to test all websites",
-        variant: "destructive",
-      });
+      console.error("Error starting speed tests:", error);
     } finally {
       setLoading(false);
     }
@@ -253,31 +241,18 @@ const Index = () => {
   const processAllPunchlines = async () => {
     setLoading(true);
 
-    toast({
-      title: "Processing Punchlines",
-      description: "Generating punchlines for all leads...",
-    });
-
     try {
-      const response = await fetch(`${API_BASE_URL}/process-punchlines`, {
-        method: "POST",
+      await startJobWithTracking('/process-punchlines', {
+        startTitle: "Processing Punchlines Started",
+        startDescription: "Generating punchlines for all leads...",
+        successTitle: "Punchlines Complete",
+        successDescription: "Punchlines processed for all leads successfully",
+        errorTitle: "Punchlines Failed",
+        errorDescription: "Failed to process punchlines for all leads",
+        onComplete: loadLeads
       });
-      const data = await response.json();
-
-      toast({
-        title: "Punchlines Complete",
-        description: data.message || "Punchlines processed for all leads",
-      });
-
-      await loadLeads();
     } catch (error) {
-      console.error("Error processing punchlines:", error);
-
-      toast({
-        title: "Punchlines Failed",
-        description: "Failed to process punchlines for all leads",
-        variant: "destructive",
-      });
+      console.error("Error starting punchline processing:", error);
     } finally {
       setLoading(false);
     }
